@@ -4,20 +4,21 @@ class TennisGame1(private val player1Name: String, private val player2Name: Stri
     private var m_score2: Int = 0
 
     override fun wonPoint(playerName: String) {
-        if (playerName === "player1")
+        if (playerName === player1Name) {
             m_score1 += 1
-        else
-            m_score2 += 1
+            return
+        }
+        m_score2 += 1
     }
 
     override fun getScore(): String {
-        return if (m_score1 == m_score2) {
-            parity()
-        } else if (m_score1 >= 4 || m_score2 >= 4) {
-            advantageOrWin()
-        } else {
-            low()
+        if (m_score1 == m_score2) {
+            return parity()
         }
+        if (m_score1 >= 4 || m_score2 >= 4) {
+            return advantageOrWin()
+        }
+        return low()
     }
 
     private fun low() = "${lowScore(m_score1)}-${lowScore(m_score2)}"
