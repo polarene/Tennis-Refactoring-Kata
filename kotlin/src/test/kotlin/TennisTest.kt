@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import kotlin.math.max
 
 class TennisTest {
 
@@ -34,7 +35,7 @@ class TennisTest {
     }
 
     fun checkAllScores(game: TennisGame, player1Score: Int, player2Score: Int, expectedScore: String) {
-        val highestScore = Math.max(player1Score, player2Score)
+        val highestScore = max(player1Score, player2Score)
         for (i in 0 until highestScore) {
             if (i < player1Score)
                 game.wonPoint("player1")
