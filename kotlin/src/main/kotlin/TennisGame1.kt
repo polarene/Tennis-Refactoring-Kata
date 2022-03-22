@@ -11,41 +11,39 @@ class TennisGame1(private val player1Name: String, private val player2Name: Stri
     }
 
     override fun getScore(): String {
-        var score = ""
-        var tempScore = 0
-        if (m_score1 == m_score2) {
-            when (m_score1) {
-                0 -> score = "Love-All"
-                1 -> score = "Fifteen-All"
-                2 -> score = "Thirty-All"
-                else -> score = "Deuce"
-            }
+        return if (m_score1 == m_score2) {
+            parity()
         } else if (m_score1 >= 4 || m_score2 >= 4) {
-            val minusResult = m_score1 - m_score2
-            if (minusResult == 1)
-                score = "Advantage player1"
-            else if (minusResult == -1)
-                score = "Advantage player2"
-            else if (minusResult >= 2)
-                score = "Win for player1"
-            else
-                score = "Win for player2"
+            advantageOrWin()
         } else {
-            for (i in 1..2) {
-                if (i == 1)
-                    tempScore = m_score1
-                else {
-                    score += "-"
-                    tempScore = m_score2
-                }
-                when (tempScore) {
-                    0 -> score += "Love"
-                    1 -> score += "Fifteen"
-                    2 -> score += "Thirty"
-                    3 -> score += "Forty"
-                }
-            }
+            low()
         }
-        return score
+    }
+
+    private fun low() = "${lowScore(m_score1)}-${lowScore(m_score2)}"
+
+    private fun lowScore(score: Int) = when (score) {
+        0 -> "Love"
+        1 -> "Fifteen"
+        2 -> "Thirty"
+        3 -> "Forty"
+        else -> throw IllegalStateException("invalid score: $score")
+    }
+
+    private fun advantageOrWin(): String {
+        val difference = m_score1 - m_score2
+        return when {
+            difference == 1 -> "Advantage player1"
+            difference == -1 -> "Advantage player2"
+            difference >= 2 -> "Win for player1"
+            else -> "Win for player2"
+        }
+    }
+
+    private fun parity() = when (m_score1) {
+        0 -> "Love-All"
+        1 -> "Fifteen-All"
+        2 -> "Thirty-All"
+        else -> "Deuce"
     }
 }
